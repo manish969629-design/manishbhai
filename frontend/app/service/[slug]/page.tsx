@@ -10,7 +10,9 @@ type Props = {
 export default async function ServicePage({ params }: Props) {
   const { slug } = await params;
 
-  const service = services.find((item) => item.slug === slug);
+  const service = services.find(
+    (item) => item.slug === slug
+  );
 
   if (!service) {
     return (
@@ -34,7 +36,6 @@ export default async function ServicePage({ params }: Props) {
   return (
     <main className="bg-gray-100 min-h-screen">
 
-      {/* Hero */}
       <section className="bg-gradient-to-r from-blue-700 to-cyan-600 text-white">
 
         <div className="max-w-6xl mx-auto py-16 px-6">
@@ -60,13 +61,9 @@ export default async function ServicePage({ params }: Props) {
 
       </section>
 
-      {/* Content */}
-
       <section className="max-w-6xl mx-auto py-16 px-6">
 
         <div className="grid lg:grid-cols-3 gap-8">
-
-          {/* Left */}
 
           <div className="lg:col-span-2 bg-white rounded-3xl shadow-lg p-8">
 
@@ -93,13 +90,50 @@ export default async function ServicePage({ params }: Props) {
 
           </div>
 
-          {/* Right */}
-
           <div className="bg-white rounded-3xl shadow-lg p-8">
 
             <h2 className="text-2xl font-bold mb-6">
               Quick Actions
             </h2>
+            <h2 className="text-2xl font-bold mb-6">
+  Apply for {service.title}
+</h2>
+
+<input
+  type="text"
+  placeholder="Your Name"
+  className="w-full border p-3 rounded-xl mb-4"
+/>
+
+<input
+  type="tel"
+  placeholder="Mobile Number"
+  className="w-full border p-3 rounded-xl mb-4"
+/>
+
+<textarea
+  placeholder="Write your requirement..."
+  className="w-full border p-3 rounded-xl mb-4 h-28"
+/>
+
+<a
+  href={`https://wa.me/919696295457?text=Hello Digital Desk, I want service for ${service.title}`}
+  target="_blank"
+  className="block text-center w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl mb-4"
+>
+  Send on WhatsApp
+</a>
+
+<button className="w-full border border-blue-600 text-blue-600 py-3 rounded-xl mb-4">
+  Required Documents
+</button>
+
+<Link
+  href="/"
+  className="block text-center mt-8 text-blue-600 font-semibold"
+>
+  ← Back to Home
+</Link>
 
             <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl mb-4">
               Apply Now

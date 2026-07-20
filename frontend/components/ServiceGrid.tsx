@@ -1,72 +1,158 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { services } from "@/data/services";
+import { motion } from "framer-motion";
+import { Search, ArrowRight } from "lucide-react";
 
 export default function ServiceGrid() {
   const [search, setSearch] = useState("");
 
-  const filteredServices = services.filter((service) =>
-    service.title.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = useMemo(() => {
+    return services.filter((service) =>
+      service.title.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [search]);
 
   return (
-    <section className="bg-gray-50 py-16">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="relative py-24 bg-slate-50 overflow-hidden">
 
-        <h2 className="text-4xl font-bold text-center mb-4">
-          Our Popular Services
-        </h2>
+      <div className="absolute left-0 top-0 h-96 w-96 rounded-full bg-cyan-100 blur-[120px] opacity-40" />
+      <div className="absolute right-0 bottom-0 h-96 w-96 rounded-full bg-blue-100 blur-[120px] opacity-40" />
 
-        <p className="text-center text-gray-600 mb-10">
-          Search and access all Digital Desk services instantly.
-        </p>
+      <div className="relative max-w-7xl mx-auto px-6">
 
-        {/* Search Box */}
-        <div className="max-w-xl mx-auto mb-12">
-          <input
-            type="text"
-            placeholder="🔍 Search services..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-xl border border-gray-300 p-4 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center"
+        >
+
+          <h2 className="text-5xl font-black text-slate-900">
+
+            Explore All Services
+
+          </h2>
+
+          <p className="mt-5 text-slate-500 max-w-2xl mx-auto leading-8">
+
+            Search and access every Digital Desk service
+            from one beautiful platform.
+
+          </p>
+
+        </motion.div>
+
+        {/* Search */}
+
+        <div className="max-w-2xl mx-auto mt-12">
+
+          <div className="flex items-center rounded-2xl bg-white shadow-xl border border-slate-200 overflow-hidden">
+
+            <Search className="ml-5 text-slate-500" />
+
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search PAN Card, Aadhaar, Passport..."
+              className="flex-1 px-4 py-5 outline-none"
+            />
+
+          </div>
+
         </div>
 
-        {/* Service Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {/* Grid */}
 
-          {filteredServices.length > 0 ? (
-            filteredServices.map((service) => (
-              <Link
-                href={`/service/${service.slug}`}
+        <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+
+          {filtered.length > 0 ? (
+
+            filtered.map((service, index) => (
+
+              <motion.div
                 key={service.slug}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                  delay: index * .04,
+                }}
               >
-                <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 hover:-translate-y-2 p-8 text-center cursor-pointer h-full">
 
-                  <div
-                    className={`${service.color} w-20 h-20 rounded-full flex items-center justify-center text-4xl mx-auto mb-5`}
-                  >
-                    {service.icon}
+                <Link href={`/service/${service.slug}`}>
+
+                  <div className="group rounded-3xl bg-white border border-slate-200 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition duration-500 p-8 h-full">
+
+                    <div
+                      className={`${service.color} h-20 w-20 rounded-3xl flex items-center justify-center text-5xl text-white shadow-lg group-hover:scale-110 transition`}
+                    >
+
+                      {service.icon}
+
+                    </div>
+
+                    <h3 className="mt-8 text-2xl font-bold text-slate-900">
+
+                      {service.title}
+
+                    </h3>
+
+                    <p className="mt-4 text-slate-500 leading-7">
+
+                      Fast online processing with expert
+                      support and secure documentation.
+
+                    </p>
+
+                    <div className="mt-8 flex items-center justify-between">
+
+                      <span className="font-semibold text-blue-600">
+
+                        View Details
+
+                      </span>
+
+                      <ArrowRight
+                        className="text-blue-600 group-hover:translate-x-2 transition"
+                      />
+
+                    </div>
+
                   </div>
 
-                  <h3 className="text-lg font-semibold">
-                    {service.title}
-                  </h3>
+                </Link>
 
-                </div>
-              </Link>
+              </motion.div>
+
             ))
+
           ) : (
-            <div className="col-span-full text-center py-10 text-gray-500 text-xl">
-              No services found.
+
+            <div className="col-span-full rounded-3xl bg-white p-16 text-center shadow-xl">
+
+              <h3 className="text-3xl font-bold">
+
+                No Service Found
+
+              </h3>
+
+              <p className="mt-4 text-slate-500">
+
+                Try another keyword.
+
+              </p>
+
             </div>
+
           )}
 
         </div>
 
       </div>
+
     </section>
   );
 }

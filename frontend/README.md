@@ -14,6 +14,18 @@ pnpm dev
 bun dev
 ```
 
+Environment
+-----------
+
+Copy `.env.local.example` to `.env.local` and set your OpenAI API key:
+
+```
+OPENAI_API_KEY=sk-REPLACE_WITH_YOUR_KEY
+MOCK_AI=false
+```
+
+Keep `.env.local` out of source control.
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
